@@ -450,37 +450,81 @@ html, body {
   }
 
   .bottom-dock {
-    gap: 10px;
+    gap: 8px;
     margin-bottom: 2px;
+    width: 100%;
   }
 
   .controls-bar {
-    gap: 8px;
+    gap: 6px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 420px;
   }
 
   .glass-btn {
-    padding: 9px 13px;
-    font-size: 0.84rem;
-    gap: 6px;
-    border-radius: 40px;
+    padding: 7px 11px;
+    font-size: 0.78rem;
+    gap: 5px;
+    border-radius: 30px;
+    white-space: nowrap;
   }
 
   .glass-btn .icon {
-    font-size: 0.95rem;
+    font-size: 0.90rem;
+  }
+
+  /* Aarti Thali Mobile Dimensions */
+  .thali-plate {
+    width: 112px;
+    height: 112px;
+  }
+
+  .thali-plate::after {
+    width: 98px;
+    height: 98px;
+  }
+
+  .thali-diya {
+    width: 44px;
+    height: 44px;
+  }
+
+  .diya-stand {
+    width: 25px;
+    height: 25px;
+  }
+
+  .wick-flame {
+    width: 7px;
+    height: 12px;
+  }
+
+  .wick-flame.w1 { top: -1px; left: 18px; }
+  .wick-flame.w2 { top: 10px; right: 2px; }
+  .wick-flame.w3 { bottom: 2px; right: 6px; }
+  .wick-flame.w4 { bottom: 2px; left: 6px; }
+  .wick-flame.w5 { top: 10px; left: 2px; }
+
+  .aarti-badge {
+    font-size: 0.74rem;
+    padding: 4px 10px;
+    margin-top: 5px;
   }
 
   .blessing-card {
-    padding: 10px 14px;
-    border-radius: 16px;
+    padding: 8px 12px;
+    border-radius: 14px;
   }
 
   .blessing-quote {
-    font-size: 0.78rem;
-    line-height: 1.4;
+    font-size: 0.75rem;
+    line-height: 1.35;
   }
 
   .blessing-sub {
-    font-size: 0.74rem;
+    font-size: 0.70rem;
     margin-top: 2px;
   }
 }
@@ -488,13 +532,29 @@ html, body {
 /* Ultra-Compact Screens (e.g. iPhone SE / 360px - 380px) */
 @media (max-width: 380px) {
   .controls-bar {
-    gap: 5px;
+    gap: 4px;
   }
 
   .glass-btn {
-    padding: 8px 10px;
-    font-size: 0.76rem;
-    gap: 4px;
+    padding: 6px 8px;
+    font-size: 0.72rem;
+    gap: 3px;
+  }
+
+  .glass-btn .icon {
+    font-size: 0.82rem;
+  }
+}
+
+/* Mobile Aarti Orbit: 95px radius so it stays perfectly within phone boundaries */
+@media (max-width: 640px) {
+  @keyframes divineAartiOrbit {
+    0% {
+      transform: translate(-50%, -50%) rotate(0deg) translateY(95px) rotate(0deg);
+    }
+    100% {
+      transform: translate(-50%, -50%) rotate(360deg) translateY(95px) rotate(-360deg);
+    }
   }
 }
 
@@ -504,8 +564,7 @@ html, body {
 .temple-bell-container {
   position: absolute;
   top: 0;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 18px;
   z-index: 15;
   display: flex;
   flex-direction: column;
@@ -518,7 +577,6 @@ html, body {
 @media (min-width: 768px) {
   .temple-bell-container {
     left: 82px;
-    transform: none;
   }
 }
 

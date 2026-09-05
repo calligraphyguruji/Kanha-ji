@@ -471,7 +471,7 @@ function initTempleInteractions(templeAudio, bansuri) {
   // Allows the devotee to physically move the Thali around Kanha Ji
   let isDragging = false;
 
-  const onDragStart = () => {
+  const onDragStart = (e) => {
     if (!isAartiActive) return;
     isDragging = true;
     if (aartiThali) {
@@ -481,6 +481,7 @@ function initTempleInteractions(templeAudio, bansuri) {
 
   const onDragMove = (e) => {
     if (!isDragging || !aartiThali) return;
+    if (e.cancelable) e.preventDefault();
     const clientX = e.touches ? e.touches[0].clientX : e.clientX;
     const clientY = e.touches ? e.touches[0].clientY : e.clientY;
     aartiThali.style.left = `${clientX}px`;
@@ -508,7 +509,7 @@ function initTempleInteractions(templeAudio, bansuri) {
     window.addEventListener('mouseup', onDragEnd);
 
     aartiThali.addEventListener('touchstart', onDragStart, { passive: true });
-    window.addEventListener('touchmove', onDragMove, { passive: true });
+    window.addEventListener('touchmove', onDragMove, { passive: false });
     window.addEventListener('touchend', onDragEnd);
   }
 }
