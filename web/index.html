@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>॥ जय श्री कृष्ण ॥ Happy Janmashtami 2026</title>
+  
+  <!-- Google Fonts: Great Vibes, Cinzel Decorative & Noto Sans Devanagari -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Great+Vibes&family=Noto+Sans+Devanagari:wght@600;700&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Ambient Particle and Starfield Canvas -->
+  <canvas id="fxCanvas"></canvas>
+
+  <!-- Background Wallpaper / Video Layer -->
+  <div class="media-container">
+    <video id="bgVideo" autoplay loop muted playsinline poster="preview.jpg">
+      <source src="krishna_animated.mp4" type="video/mp4" />
+    </video>
+    <!-- Fallback artwork image if video is not yet placed -->
+    <div class="fallback-glow" id="fallbackGlow"></div>
+  </div>
+
+  <!-- Cinematic Vignette & Atmospheric Fog -->
+  <div class="vignette"></div>
+  <div class="divine-rays"></div>
+
+  <!-- Main Web Overlay -->
+  <main class="ui-overlay">
+    <!-- Header Section -->
+    <header class="header">
+      <h1 class="main-title">HAPPY JANMASHTAMI 2026</h1>
+      <h2 class="sanskrit-title">॥ जय श्री कृष्ण ॥</h2>
+      <div class="divine-divider">
+        <span class="line"></span>
+        <span class="om">ॐ</span>
+        <span class="line"></span>
+      </div>
+    </header>
+
+    <!-- Bottom Dock: Controls + Blessing Card -->
+    <div class="bottom-dock">
+      <section class="controls-bar">
+        <button id="bansuriBtn" class="glass-btn pulse">
+          <span class="icon">♪</span>
+          <span class="label">Play Bansuri</span>
+        </button>
+
+        <a id="downloadBtn" href="krishna_animated.mp4" download="krishna_janmashtami_9_16.mp4" class="glass-btn">
+          <span class="icon">⬇</span>
+          <span class="label">Save Wallpaper</span>
+        </a>
+
+        <button id="fullscreenBtn" class="glass-btn">
+          <span class="icon">⛶</span>
+          <span class="label">Fullscreen</span>
+        </button>
+      </section>
+
+      <!-- Bottom Sacred Blessing Card -->
+      <footer class="blessing-card">
+        <p class="blessing-quote">
+          “May Lord Krishna bless you with happiness, peace, prosperity and success.”
+        </p>
+        <p class="blessing-sub">
+          Happy Janmashtami 2026 <span>❀</span>
+        </p>
+      </footer>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
