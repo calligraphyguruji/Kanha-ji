@@ -25,6 +25,7 @@ import os
 import math
 import random
 import time
+import datetime
 from typing import List, Tuple, Optional
 
 # Ensure pygame and numpy are available
@@ -43,6 +44,7 @@ except ImportError as e:
 V_WIDTH = 1920
 V_HEIGHT = 1080
 TARGET_FPS = 60
+CURRENT_YEAR = datetime.datetime.now().year
 
 # Palette Definitions
 COLOR_SKY_TOP = (6, 8, 28)
@@ -1520,9 +1522,9 @@ class Typography:
         pulse = 0.85 + 0.15 * math.sin(current_time * 2.0)
         final_alpha = alpha * pulse
 
-        # Top title: "HAPPY JANMASHTAMI 2026"
+        # Top title: Dynamic "HAPPY JANMASHTAMI <YEAR>"
         self.draw_golden_text(
-            surface, "HAPPY JANMASHTAMI 2026",
+            surface, f"HAPPY JANMASHTAMI {CURRENT_YEAR}",
             self.font_title, (V_WIDTH // 2, 70), final_alpha
         )
 
@@ -1551,7 +1553,7 @@ class Typography:
             self.font_subtitle, (cx, cy - 18), alpha
         )
         self.draw_golden_text(
-            surface, "Happy Janmashtami 2026 🌸",
+            surface, f"Happy Janmashtami {CURRENT_YEAR} 🌸",
             self.font_subtitle, (cx, cy + 22), alpha
         )
 
@@ -1602,7 +1604,7 @@ class JanmashtamiApp:
     """Master application controlling rendering loop, responsive scaling and user inputs."""
     def __init__(self):
         pygame.init()
-        pygame.display.set_caption("Janmashtami 2026 - Bal Krishna (Kanha Ji)")
+        pygame.display.set_caption(f"Janmashtami {CURRENT_YEAR} - Bal Krishna (Kanha Ji)")
 
         # Initial window resolution (responsive: 1280x720 default window, scales to 1920x1080 or fullscreen)
         self.win_width = 1280

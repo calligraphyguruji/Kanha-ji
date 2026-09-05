@@ -515,9 +515,22 @@ function initTempleInteractions(templeAudio, bansuri) {
 }
 
 // ==============================================================================
+// DYNAMIC YEAR CONTROLLER
+// ==============================================================================
+function updateDynamicYear() {
+  const currentYear = new Date().getFullYear();
+  document.title = `॥ जय श्री कृष्ण ॥ Happy Janmashtami ${currentYear}`;
+  document.querySelectorAll('.current-year').forEach(el => {
+    el.textContent = currentYear;
+  });
+}
+
+// ==============================================================================
 // UI EVENT CONTROLLERS
 // ==============================================================================
 document.addEventListener('DOMContentLoaded', () => {
+  updateDynamicYear();
+
   const bansuri = new WebBansuri();
   const templeAudio = new TempleAudio(bansuri.ctx);
 
