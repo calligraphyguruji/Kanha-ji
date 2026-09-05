@@ -273,13 +273,257 @@ function initDarshanReveal(bansuri) {
 }
 
 // ==============================================================================
+// TEMPLE AUDIO SYNTHESIZER (BELL & AARTI SOUNDS)
+// ==============================================================================
+class TempleAudio {
+  constructor(sharedCtx = null) {
+    this.ctx = sharedCtx;
+  }
+
+  init() {
+    if (!this.ctx) {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      this.ctx = new AudioContext();
+    }
+    if (this.ctx.state === 'suspended') {
+      this.ctx.resume();
+    }
+  }
+
+  // Realistic temple brass bell (Mandir Ghanti) synthesis
+  ringBell() {
+    this.init();
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+
+    // Authentic bronze temple bell partials
+    const bellPartials = [
+      { ratio: 1.0, gain: 0.55, decay: 3.2 },
+      { ratio: 1.98, gain: 0.35, decay: 2.2 },
+      { ratio: 2.96, gain: 0.22, decay: 1.6 },
+      { ratio: 4.14, gain: 0.16, decay: 1.1 },
+      { ratio: 5.43, gain: 0.10, decay: 0.7 },
+      { ratio: 6.82, gain: 0.06, decay: 0.4 }
+    ];
+
+    const baseFreq = 1046.5; // C6 bell resonance
+
+    bellPartials.forEach(p => {
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(baseFreq * p.ratio, now);
+
+      gain.gain.setValueAtTime(0.001, now);
+      // Fast strike transient
+      gain.gain.linearRampToValueAtTime(p.gain, now + 0.006);
+      // Exponential bronze decay
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + p.decay);
+
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+
+      osc.start(now);
+      osc.stop(now + p.decay + 0.1);
+    });
+  }
+}
+
+// ==============================================================================
+// INTERACTIVE TEMPLE BELL & AARTI / PUJA CONTROLLERS
+// ==============================================================================
+function initTempleInteractions(templeAudio, bansuri) {
+  const bellBtn = document.getElementById('bellBtn');
+  const bellContainer = document.getElementById('templeBellContainer');
+  const bellBody = document.getElementById('bellBody');
+  const bellGlow = document.getElementById('bellGlow');
+
+  const aartiBtn = document.getElementById('aartiBtn');
+  const aartiThali = document.getElementById('aartiThali');
+  const petalContainer = document.getElementById('petalContainer');
+
+  // Trigger Bell Ring
+  const triggerBell = () => {
+    templeAudio.ringBell();
+
+    // Bell swing animation
+    if (bellBody) {
+      bellBody.classList.remove('ringing');
+      void bellBody.offsetWidth; // Force reflow
+      bellBody.classList.add('ringing');
+    }
+
+    // Bell golden shockwave glow
+    if (bellGlow) {
+      bellGlow.classList.remove('active');
+      void bellGlow.offsetWidth;
+      bellGlow.classList.add('active');
+    }
+  };
+
+  if (bellBtn) {
+    bellBtn.addEventListener('click', triggerBell);
+  }
+
+  if (bellContainer) {
+    bellContainer.addEventListener('click', triggerBell);
+  }
+
+  // --- AARTI / PUJA SYSTEM ---
+  let isAartiActive = false;
+  let petalInterval = null;
+  let aartiBellInterval = null;
+
+  // Flower Petal Spawner (Pushpa Vrishti)
+  const spawnPetal = () => {
+    if (!petalContainer) return;
+    const petal = document.createElement('div');
+    petal.className = 'falling-petal';
+    const petals = ['🌸', '🌼', '🌺', '🌹', '🪷'];
+    petal.textContent = petals[Math.floor(Math.random() * petals.length)];
+    petal.style.left = Math.random() * 95 + 'vw';
+    const duration = Math.random() * 2.5 + 3.0; // 3.0 - 5.5s
+    petal.style.animationDuration = duration + 's';
+    petal.style.fontSize = Math.random() * 0.8 + 1.1 + 'rem';
+
+    petalContainer.appendChild(petal);
+    setTimeout(() => {
+      if (petal.parentNode) {
+        petal.parentNode.removeChild(petal);
+      }
+    }, duration * 1000);
+  };
+
+  const startAarti = () => {
+    isAartiActive = true;
+    if (aartiBtn) {
+      aartiBtn.classList.add('active-puja');
+      aartiBtn.innerHTML = '<span class="icon">🪔</span><span class="label">Stop Aarti</span>';
+    }
+
+    // Show Aarti Thali & start orbit
+    if (aartiThali) {
+      aartiThali.style.left = '50%';
+      aartiThali.style.top = '50%';
+      aartiThali.classList.remove('darshan-hidden');
+      aartiThali.classList.add('aarti-orbiting');
+    }
+
+    // Auto-ring bell on Aarti start
+    templeAudio.ringBell();
+
+    // Periodic gentle Aarti bell chimes
+    aartiBellInterval = setInterval(() => {
+      templeAudio.ringBell();
+    }, 2800);
+
+    // Continuous Pushpa Vrishti (Flower shower)
+    for (let i = 0; i < 8; i++) {
+      setTimeout(spawnPetal, i * 200);
+    }
+    petalInterval = setInterval(spawnPetal, 450);
+
+    // If bansuri isn't playing, start it for divine devotional ambience
+    if (bansuri && !bansuri.isPlaying) {
+      bansuri.startMelody();
+      const bansuriBtn = document.getElementById('bansuriBtn');
+      if (bansuriBtn) {
+        bansuriBtn.classList.remove('pulse');
+        bansuriBtn.innerHTML = '<span class="icon">⏸</span><span class="label">Pause Bansuri</span>';
+      }
+    }
+  };
+
+  const stopAarti = () => {
+    isAartiActive = false;
+    if (aartiBtn) {
+      aartiBtn.classList.remove('active-puja');
+      aartiBtn.innerHTML = '<span class="icon">🪔</span><span class="label">Aarti / Puja</span>';
+    }
+
+    if (aartiThali) {
+      aartiThali.classList.remove('aarti-orbiting');
+      aartiThali.classList.add('darshan-hidden');
+    }
+
+    if (petalInterval) {
+      clearInterval(petalInterval);
+      petalInterval = null;
+    }
+    if (aartiBellInterval) {
+      clearInterval(aartiBellInterval);
+      aartiBellInterval = null;
+    }
+  };
+
+  if (aartiBtn) {
+    aartiBtn.addEventListener('click', () => {
+      if (isAartiActive) {
+        stopAarti();
+      } else {
+        startAarti();
+      }
+    });
+  }
+
+  // --- DRAG / TOUCH INTERACTION FOR AARTI THALI ---
+  // Allows the devotee to physically move the Thali around Kanha Ji
+  let isDragging = false;
+
+  const onDragStart = () => {
+    if (!isAartiActive) return;
+    isDragging = true;
+    if (aartiThali) {
+      aartiThali.classList.remove('aarti-orbiting');
+    }
+  };
+
+  const onDragMove = (e) => {
+    if (!isDragging || !aartiThali) return;
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    aartiThali.style.left = `${clientX}px`;
+    aartiThali.style.top = `${clientY}px`;
+    aartiThali.style.transform = 'translate(-50%, -50%)';
+
+    if (Math.random() > 0.6) {
+      spawnPetal();
+    }
+  };
+
+  const onDragEnd = () => {
+    if (!isDragging) return;
+    isDragging = false;
+    if (isAartiActive && aartiThali) {
+      aartiThali.style.left = '50%';
+      aartiThali.style.top = '50%';
+      aartiThali.classList.add('aarti-orbiting');
+    }
+  };
+
+  if (aartiThali) {
+    aartiThali.addEventListener('mousedown', onDragStart);
+    window.addEventListener('mousemove', onDragMove);
+    window.addEventListener('mouseup', onDragEnd);
+
+    aartiThali.addEventListener('touchstart', onDragStart, { passive: true });
+    window.addEventListener('touchmove', onDragMove, { passive: true });
+    window.addEventListener('touchend', onDragEnd);
+  }
+}
+
+// ==============================================================================
 // UI EVENT CONTROLLERS
 // ==============================================================================
 document.addEventListener('DOMContentLoaded', () => {
   const bansuri = new WebBansuri();
+  const templeAudio = new TempleAudio(bansuri.ctx);
+
   new ParticleCanvas('fxCanvas');
 
   initDarshanReveal(bansuri);
+  initTempleInteractions(templeAudio, bansuri);
 
   const bansuriBtn = document.getElementById('bansuriBtn');
   const fullscreenBtn = document.getElementById('fullscreenBtn');

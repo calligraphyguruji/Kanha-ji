@@ -45,6 +45,51 @@
   <div class="vignette"></div>
   <div class="divine-rays"></div>
 
+  <!-- Hanging Temple Brass Bell (Interactive Mandir Ghanti) -->
+  <div id="templeBellContainer" class="temple-bell-container" title="Click to Ring Temple Bell">
+    <div class="bell-chain"></div>
+    <div class="bell-body" id="bellBody">
+      <div class="bell-cap"></div>
+      <div class="bell-dome">
+        <div class="bell-tongue"></div>
+      </div>
+      <div class="bell-rim"></div>
+    </div>
+    <div class="bell-glow" id="bellGlow"></div>
+  </div>
+
+  <!-- Sacred Aarti Thali (Interactive Puja Mode) -->
+  <div id="aartiThali" class="aarti-thali darshan-hidden">
+    <div class="thali-plate">
+      <!-- Sacred Flowers on Thali -->
+      <div class="thali-decorations">
+        <span class="thali-flower tf1">🌼</span>
+        <span class="thali-flower tf2">🌸</span>
+        <span class="thali-flower tf3">🌼</span>
+        <span class="thali-flower tf4">🌸</span>
+        <span class="thali-kumkum"></span>
+      </div>
+      <!-- Panchmukhi Deepa (5-wick Aarti Diya) -->
+      <div class="thali-diya">
+        <div class="diya-stand"></div>
+        <div class="wick-flame w1"><div class="fire-glow"></div></div>
+        <div class="wick-flame w2"><div class="fire-glow"></div></div>
+        <div class="wick-flame w3"><div class="fire-glow"></div></div>
+        <div class="wick-flame w4"><div class="fire-glow"></div></div>
+        <div class="wick-flame w5"><div class="fire-glow"></div></div>
+      </div>
+      <!-- Incense / Dhoop Smoke -->
+      <div class="thali-dhoop">
+        <div class="dhoop-stick"></div>
+        <div class="incense-smoke"></div>
+      </div>
+    </div>
+    <div class="aarti-badge">🪔 Doing Puja of Kanha Ji (Drag Thali)</div>
+  </div>
+
+  <!-- Flower Shower (Pushpa Vrishti) during Puja -->
+  <div id="petalContainer" class="petal-container"></div>
+
   <!-- Main Web Overlay (Revealed after transition) -->
   <main class="ui-overlay darshan-hidden" id="uiOverlay">
     <!-- Header Section -->
@@ -61,17 +106,32 @@
     <!-- Bottom Dock: Controls + Blessing Card -->
     <div class="bottom-dock">
       <section class="controls-bar">
-        <button id="bansuriBtn" class="glass-btn pulse">
+        <!-- Mandir Bell Button -->
+        <button id="bellBtn" class="glass-btn pulse-gold" title="Ring Temple Bell">
+          <span class="icon">🔔</span>
+          <span class="label">Ring Bell</span>
+        </button>
+
+        <!-- Aarti / Puja Button -->
+        <button id="aartiBtn" class="glass-btn pulse" title="Perform Divine Aarti & Puja">
+          <span class="icon">🪔</span>
+          <span class="label">Aarti / Puja</span>
+        </button>
+
+        <!-- Bansuri Flute Button -->
+        <button id="bansuriBtn" class="glass-btn" title="Toggle Bansuri Music">
           <span class="icon">♪</span>
           <span class="label">Play Bansuri</span>
         </button>
 
-        <a id="downloadBtn" href="krishna_animated.mp4" download="krishna_janmashtami_9_16.mp4" class="glass-btn">
+        <!-- Save Wallpaper Button -->
+        <a id="downloadBtn" href="krishna_animated.mp4" download="krishna_janmashtami_9_16.mp4" class="glass-btn" title="Download 9:16 Video Wallpaper">
           <span class="icon">⬇</span>
-          <span class="label">Save Wallpaper</span>
+          <span class="label">Wallpaper</span>
         </a>
 
-        <button id="fullscreenBtn" class="glass-btn">
+        <!-- Fullscreen Button -->
+        <button id="fullscreenBtn" class="glass-btn" title="Toggle Fullscreen">
           <span class="icon">⛶</span>
           <span class="label">Fullscreen</span>
         </button>
