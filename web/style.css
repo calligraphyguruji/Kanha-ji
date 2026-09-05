@@ -18,10 +18,13 @@
 html, body {
   width: 100%;
   height: 100%;
+  height: 100dvh;
   overflow: hidden;
   background-color: var(--bg-deep);
   font-family: 'Outfit', sans-serif;
   color: var(--text-light);
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 /* Background Media Container (Maintains 9:16 phone wallpaper aspect or widescreen immersion) */
@@ -86,11 +89,12 @@ html, body {
   z-index: 4;
   width: 100%;
   height: 100%;
+  height: 100dvh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: 24px 20px;
+  padding: max(18px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(14px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
   pointer-events: none;
 }
 
@@ -245,4 +249,84 @@ html, body {
 @keyframes gentlePulse {
   0%, 100% { box-shadow: 0 4px 16px rgba(0,0,0,0.4); }
   50% { box-shadow: 0 4px 22px var(--gold-glow); }
+}
+
+/* ==============================================================================
+   RESPONSIVE MOBILE PHONE OPTIMIZATIONS (SCREENS < 640px)
+   ============================================================================== */
+@media (max-width: 640px) {
+  .ui-overlay {
+    padding: max(14px, env(safe-area-inset-top)) 12px max(12px, env(safe-area-inset-bottom)) 12px;
+  }
+
+  .header {
+    margin-top: 4px;
+  }
+
+  .main-title {
+    font-size: 1.15rem;
+    letter-spacing: 2px;
+  }
+
+  .sanskrit-title {
+    font-size: 1.35rem;
+    margin-top: 2px;
+  }
+
+  .divine-divider {
+    margin-top: 4px;
+    gap: 8px;
+  }
+
+  .divine-divider .line {
+    width: 32px;
+  }
+
+  .bottom-dock {
+    gap: 10px;
+    margin-bottom: 2px;
+  }
+
+  .controls-bar {
+    gap: 8px;
+  }
+
+  .glass-btn {
+    padding: 9px 13px;
+    font-size: 0.84rem;
+    gap: 6px;
+    border-radius: 40px;
+  }
+
+  .glass-btn .icon {
+    font-size: 0.95rem;
+  }
+
+  .blessing-card {
+    padding: 10px 14px;
+    border-radius: 16px;
+  }
+
+  .blessing-quote {
+    font-size: 0.78rem;
+    line-height: 1.4;
+  }
+
+  .blessing-sub {
+    font-size: 0.74rem;
+    margin-top: 2px;
+  }
+}
+
+/* Ultra-Compact Screens (e.g. iPhone SE / 360px - 380px) */
+@media (max-width: 380px) {
+  .controls-bar {
+    gap: 5px;
+  }
+
+  .glass-btn {
+    padding: 8px 10px;
+    font-size: 0.76rem;
+    gap: 4px;
+  }
 }
