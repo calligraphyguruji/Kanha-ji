@@ -16,8 +16,24 @@
   <!-- Ambient Particle and Starfield Canvas -->
   <canvas id="fxCanvas"></canvas>
 
-  <!-- Background Wallpaper / Video Layer -->
-  <div class="media-container">
+  <!-- Cinematic Divine Darshan Intro Screen -->
+  <div id="introOverlay" class="intro-overlay">
+    <div class="intro-bg-glow"></div>
+    <div class="intro-content">
+      <div class="sacred-symbol-ring">
+        <span class="sacred-om">ॐ</span>
+      </div>
+      <p class="intro-mantra">॥ ॐ नमो भगवते वासुदेवाय ॥</p>
+      <h2 class="intro-subtitle">Divya Darshan • Janmashtami 2026</h2>
+      <button id="enterDarshanBtn" class="enter-btn">
+        <span>Touch for Darshan 🪷</span>
+      </button>
+      <p class="auto-enter-hint">Revealing Kanha Ji...</p>
+    </div>
+  </div>
+
+  <!-- Background Wallpaper / Video Layer (Revealed after transition) -->
+  <div class="media-container darshan-hidden" id="mediaContainer">
     <video id="bgVideo" autoplay loop muted playsinline poster="preview.jpg">
       <source src="krishna_animated.mp4" type="video/mp4" />
     </video>
@@ -29,8 +45,8 @@
   <div class="vignette"></div>
   <div class="divine-rays"></div>
 
-  <!-- Main Web Overlay -->
-  <main class="ui-overlay">
+  <!-- Main Web Overlay (Revealed after transition) -->
+  <main class="ui-overlay darshan-hidden" id="uiOverlay">
     <!-- Header Section -->
     <header class="header">
       <h1 class="main-title">HAPPY JANMASHTAMI 2026</h1>

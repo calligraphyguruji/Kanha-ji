@@ -195,11 +195,91 @@ class ParticleCanvas {
 }
 
 // ==============================================================================
+// CINEMATIC DARSHAN INTRO REVEAL CONTROLLER
+// ==============================================================================
+function initDarshanReveal(bansuri) {
+  const introOverlay = document.getElementById('introOverlay');
+  const enterBtn = document.getElementById('enterDarshanBtn');
+  const mediaContainer = document.getElementById('mediaContainer');
+  const uiOverlay = document.getElementById('uiOverlay');
+  const bgVideo = document.getElementById('bgVideo');
+  const bansuriBtn = document.getElementById('bansuriBtn');
+
+  let hasRevealed = false;
+
+  const triggerReveal = (startAudio = false) => {
+    if (hasRevealed) return;
+    hasRevealed = true;
+
+    // 1. Trigger transition on intro screen
+    if (introOverlay) {
+      introOverlay.classList.add('revealed');
+    }
+
+    // 2. Reveal Kanha Ji picture/video with cinematic bloom
+    if (mediaContainer) {
+      mediaContainer.classList.remove('darshan-hidden');
+      mediaContainer.classList.add('darshan-revealed');
+    }
+
+    // 3. Ensure background video plays smoothly
+    if (bgVideo) {
+      bgVideo.play().catch(() => {});
+    }
+
+    // 4. Reveal UI Overlay smoothly
+    setTimeout(() => {
+      if (uiOverlay) {
+        uiOverlay.classList.remove('darshan-hidden');
+        uiOverlay.classList.add('darshan-revealed');
+      }
+    }, 500);
+
+    // 5. Start bansuri music if user tapped
+    if (startAudio && bansuri && !bansuri.isPlaying) {
+      bansuri.startMelody();
+      if (bansuriBtn) {
+        bansuriBtn.classList.remove('pulse');
+        bansuriBtn.innerHTML = '<span class="icon">⏸</span><span class="label">Pause Bansuri</span>';
+      }
+    }
+
+    // Remove intro overlay from DOM after transition completes
+    setTimeout(() => {
+      if (introOverlay) {
+        introOverlay.style.display = 'none';
+      }
+    }, 2200);
+  };
+
+  // User click on button or screen
+  if (enterBtn) {
+    enterBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      triggerReveal(true);
+    });
+  }
+
+  if (introOverlay) {
+    introOverlay.addEventListener('click', () => {
+      triggerReveal(true);
+    });
+  }
+
+  // Auto-reveal after 3.2 seconds if user hasn't clicked
+  setTimeout(() => {
+    triggerReveal(false);
+  }, 3200);
+}
+
+// ==============================================================================
 // UI EVENT CONTROLLERS
 // ==============================================================================
 document.addEventListener('DOMContentLoaded', () => {
   const bansuri = new WebBansuri();
   new ParticleCanvas('fxCanvas');
+
+  initDarshanReveal(bansuri);
 
   const bansuriBtn = document.getElementById('bansuriBtn');
   const fullscreenBtn = document.getElementById('fullscreenBtn');
